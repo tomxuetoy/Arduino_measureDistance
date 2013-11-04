@@ -7,8 +7,8 @@
 #include <SoftwareSerial.h>
 
 int outPin = 13;
-volatile int d1, d2;
-int distance;
+volatile float d1, d2;
+float distance;
 
 // the setup routine runs once when you press reset:
 void setup() {
@@ -30,28 +30,30 @@ void setup() {
 // the loop routine runs over and over again forever:
 void loop() {
   digitalWrite(outPin, HIGH); // turn the LED on (HIGH is the voltage level)
-  delay(1);     // keep high for at least 10us, here for 1ms
+  delay(1); // keep high for at least 10us, here for 1ms
   digitalWrite(outPin, LOW); // turn the LED off (LOW is the voltage level)
 
   if(d2 > d1)
-    distance = (d2-d1)*340;  
+    distance = (d2-d1)*0.017;
 
   //if (Serial.available())
   {
-    delay(100);     // 4.5m/340 = 13.2ms
+    delay(100); // 4.5m/340 = 13.2ms
     Serial.print("The distance is: ");
     Serial.print(distance);
-    Serial.println("mm");
+    Serial.print("cm    ");
+    Serial.print(distance/2.54);
+    Serial.println("inches");
   }
 }
 
 // 2cm = 0.02m, 0.02m/340 = 58.8us, Can Arduino ( e.g. millis() ) measure so small time slot?
 void measure1()
 {
-  d1 = millis();
+  d1 = micros();
 }
 
 void measure2()
 {
-  d2 = millis();
+  d2 = micros();
 }
