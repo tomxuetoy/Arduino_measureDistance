@@ -7,7 +7,7 @@
 
 // Modified by Tom Xue for HC-SR04 ultrasonic sensor
 // pin 13 to be set as output pin and provides the trig signal (to start it) to HC-SR04
-const int pwPin = 7, trigPin = 13; 
+const int pwPin = 7, trigPin = 13, ledPin = 6;
 
 //variables needed to store values
 long pulse, inches, cm;
@@ -16,6 +16,7 @@ void setup() {
   Serial.begin(9600);
   pinMode(pwPin, INPUT);
   pinMode(trigPin, OUTPUT);
+  pinMode(ledPin, OUTPUT);
 }
 void loop() {
   digitalWrite(trigPin, HIGH);
@@ -34,6 +35,10 @@ void loop() {
   // Tom Xue: I am used to this kind of calculation
   cm = pulse*0.340*0.100/2;
   inches = cm/2.54;
+  if(cm < 5)  
+    digitalWrite(ledPin, HIGH);
+  else
+    digitalWrite(ledPin, LOW);
   Serial.print(inches);
   Serial.print("in, ");
   Serial.print(cm);
